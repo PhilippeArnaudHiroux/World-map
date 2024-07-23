@@ -22,7 +22,7 @@ fig = px.scatter_geo(df,
                      lon='lon',
                      lat='lat',
                      hover_name='name',  # De naam van de stad verschijnt bij hover
-                     title='Wereldkaart met Steden en Landgrenzen',
+                     title='My world map!',
                      projection='natural earth',
                      hover_data={'lon': False, 'lat': False}  # Verberg lon en lat bij hover
                      )
@@ -43,12 +43,13 @@ fig.update_geos(
     showrivers=True,
     rivercolor='blue',
     showcountries=True,  # Deze regel zorgt voor de landgrenzen
-    countrycolor='black'
+    countrycolor='black',
+    bgcolor='black'  # Achtergrondkleur van de kaart
 )
 
 # Pas de layout aan voor beter zicht
 fig.update_layout(
-    title='Wereldkaart met Interactieve Steden en Landgrenzen',
+    title='My world map!',
     geo=dict(
         showland=True,
         landcolor='lightgreen',
@@ -63,7 +64,10 @@ fig.update_layout(
         showcountries=True,
         countrycolor='black'
     ),
-    showlegend=False
+    showlegend=True,
+    plot_bgcolor='black',  # Achtergrondkleur van de plot
+    paper_bgcolor='black',  # Achtergrondkleur van de pagina
+    font=dict(color='white')  # Kleur van de tekst
 )
 
 # Toon de kaart
