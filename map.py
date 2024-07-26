@@ -54,6 +54,9 @@ fig.update_geos(
     rivercolor='blue',
     showcountries=True,  # Deze regel zorgt voor de landgrenzen
     countrycolor='black',
+    showframe=False,  # Verberg frame rond de kaart
+    resolution=50,  # Hogere resolutie voor meer details
+    projection_scale=1,  # Schaal van de projectie
     bgcolor='black'  # Achtergrondkleur van de kaart
 )
 
