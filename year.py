@@ -33,7 +33,7 @@ def add_year():
     # Refresh the year combobox
     update_year_combobox()
     new_year_entry.delete(0, tk.END)
-    color_entry.delete(0, tk.END)
+    color_display_label.config(bg="white")  # Reset to white after adding a year
     messagebox.showinfo("Succes", f"Jaar {new_year} met kleurcode {color_code} is toegevoegd.")
 
 def update_year_combobox():
@@ -45,11 +45,13 @@ def update_year_combobox():
 
 def choose_color():
     color_code = colorchooser.askcolor(title="Kies een kleur")
-    if color_code[0] is not None:  # Check if the user selected a color
+    if color_code[1] is not None:  # Check if the user selected a color
         # Get the hexadecimal color code from the RGB tuple
-        hex_color = f"0x{''.join(f'{int(c):02X}' for c in color_code[0])}"
+        hex_color = color_code[1]
         color_entry.delete(0, tk.END)  # Clear the entry field
         color_entry.insert(0, hex_color)  # Insert the hex color code
+        color_display_label.config(bg=hex_color)  # Change the label's background color to the selected color
+        choose_color_button.config(bg=hex_color, fg="white")  # Change the button's background color to the selected color
     else:
         messagebox.showinfo("Informatie", "Geen kleur geselecteerd.")  # Inform user if no color was chosen
 
@@ -64,20 +66,19 @@ label_new_year.pack(pady=10)
 new_year_entry = tk.Entry(root, width=20)
 new_year_entry.pack(pady=10)
 
-# Create a label and entry for RGB color code
-label_color = tk.Label(root, text="Kies een RGB kleur:")
-label_color.pack(pady=10)
-
+# Create an entry to display the color code
 color_entry = tk.Entry(root, width=20)
-color_entry.pack(pady=10)
 
 # Create a button to open the color chooser
-choose_color_button = tk.Button(root, text="Kleur kiezen", command=choose_color)
+choose_color_button = tk.Button(root, text="Choose a color", command=choose_color, width=20)
 choose_color_button.pack(pady=5)
 
 # Create a button to add the new year and color
 add_year_button = tk.Button(root, text="Voeg Jaar Toe", command=add_year)
 add_year_button.pack(pady=20)
+
+# Create a label for displaying the selected color
+color_display_label = tk.Label(root, text="Gekozen kleur", width=20, height=2, bg="white", relief="groove")
 
 # Create a label for displaying available years
 label_years = tk.Label(root, text="Bestaande jaren:")
@@ -89,6 +90,10 @@ year_combobox.pack(pady=10)
 
 # Load existing years into the combobox at startup
 update_year_combobox()
+
+# Voeg een label toe onder de knoppen
+footer_label = tk.Label(root, text="Made by Philippe-Arnaud Hiroux ©", font=("Arial", 10))
+footer_label.pack(side=tk.BOTTOM, pady=10)  # Plaats het label onderaan met wat ruimte
 
 # Run the Tkinter event loop
 root.mainloop()

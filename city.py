@@ -84,5 +84,9 @@ if years:  # Set the default selected year to the first one if available
 fetch_button = tk.Button(root, text="Zoek Coördinaten", command=fetch_location)
 fetch_button.pack(pady=20)
 
+# Voeg een label toe onder de knoppen
+footer_label = tk.Label(root, text="Made by Philippe-Arnaud Hiroux ©", font=("Arial", 10))
+footer_label.pack(side=tk.BOTTOM, pady=10)  # Plaats het label onderaan met wat ruimte
+
 # Run the Tkinter event loop
 root.mainloop()
