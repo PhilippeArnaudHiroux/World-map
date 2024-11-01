@@ -1,3 +1,4 @@
 *.txt
 *photos
 *__pycache__
+*world_map.html
