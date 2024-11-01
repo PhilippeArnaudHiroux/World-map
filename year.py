@@ -3,15 +3,15 @@ from tkinter import messagebox, colorchooser, ttk
 import ast  # To safely evaluate string representations of Python literals
 
 def load_years_from_file(file_name):
-    years = []
+    years = {}
     try:
         with open(file_name, 'r') as file:
             for line in file:
                 # Convert string representation of dictionary to a Python dictionary
                 try:
                     data_dict = ast.literal_eval(line.strip())
-                    for year in data_dict.keys():
-                        years.append(year)  # Add only the year to the list
+                    for year, color in data_dict.items():
+                        years[year] = color  # Store year and color in a dictionary
                 except (SyntaxError, ValueError):
                     continue  # Skip lines that cannot be parsed
     except FileNotFoundError:
@@ -30,18 +30,27 @@ def add_year():
     with open('year.txt', 'a') as file:
         file.write(f"{{'{new_year}': {color_code}}}\n")  # Ensure that it's on a new line
     
-    # Refresh the year combobox
-    update_year_combobox()
+    # Refresh the year display
+    update_year_display()
     new_year_entry.delete(0, tk.END)
     color_display_label.config(bg="white")  # Reset to white after adding a year
     messagebox.showinfo("Succes", f"Jaar {new_year} met kleurcode {color_code} is toegevoegd.")
 
-def update_year_combobox():
-    # Update the combobox with years from the file
+def update_year_display():
+    # Clear existing labels
+    for label in year_labels:
+        label.destroy()
+    year_labels.clear()
+
+    # Load years from the file
     years = load_years_from_file('year.txt')
-    year_combobox['values'] = years
-    if years:
-        year_combobox.current(0)  # Select the first year if available
+    
+    # Create labels for existing years with their corresponding colors
+    for year, color in sorted(years.items(), key=lambda item: int(item[0])):  # Sort by year
+        color_code_hex = f"#{color:06X}"  # Convert the color code to a hex string
+        label = tk.Label(year_frame, text=year, bg=color_code_hex, width=20, anchor='w')
+        label.pack(pady=2)  # Add some padding for spacing
+        year_labels.append(label)
 
 def choose_color():
     color_code = colorchooser.askcolor(title="Kies een kleur")
@@ -66,11 +75,14 @@ label_new_year.pack(pady=10)
 new_year_entry = tk.Entry(root, width=20)
 new_year_entry.pack(pady=10)
 
+# Create a label and entry for RGB color code
+label_color = tk.Label(root, text="Kies een RGB kleur:")
+
 # Create an entry to display the color code
 color_entry = tk.Entry(root, width=20)
 
 # Create a button to open the color chooser
-choose_color_button = tk.Button(root, text="Choose a color", command=choose_color, width=20)
+choose_color_button = tk.Button(root, text="Kleur kiezen", command=choose_color, width=20)
 choose_color_button.pack(pady=5)
 
 # Create a button to add the new year and color
@@ -80,16 +92,12 @@ add_year_button.pack(pady=20)
 # Create a label for displaying the selected color
 color_display_label = tk.Label(root, text="Gekozen kleur", width=20, height=2, bg="white", relief="groove")
 
-# Create a label for displaying available years
-label_years = tk.Label(root, text="Bestaande jaren:")
-label_years.pack(pady=10)
+# Create a frame for displaying existing years
+year_frame = tk.Frame(root)
+year_frame.pack(pady=10)
 
-# Create a combobox to display existing years
-year_combobox = ttk.Combobox(root, state="readonly")
-year_combobox.pack(pady=10)
-
-# Load existing years into the combobox at startup
-update_year_combobox()
+year_labels = []  # List to keep track of year labels
+update_year_display()  # Load existing years into the display at startup
 
 # Voeg een label toe onder de knoppen
 footer_label = tk.Label(root, text="Made by Philippe-Arnaud Hiroux ©", font=("Arial", 10))
