@@ -22,7 +22,7 @@ def open_city_window():
     subprocess.Popen(['python', 'city.py'])
 
 def open_year_window():
-    subprocess.Popen(['python', 'year.py'])
+    subprocess.Popen(['python', 'label.py'])
 
 def open_map_window():
     subprocess.Popen(['python', 'map.py'])
@@ -53,11 +53,6 @@ add_map_button.grid(row=0, column=2, padx=10)
 # Add a label below the buttons
 footer_label = tk.Label(root, text="Made by Philippe-Arnaud Hiroux ©", font=("Arial", 10))
 footer_label.pack(side=tk.BOTTOM, pady=10)
-
-# Read and sort years on startup
-sorted_years = read_and_sort_years()
-if sorted_years:
-    print("Sorted Years:", sorted_years)  # You can modify this to display in the GUI if needed
 
 # Start the Tkinter event loop
 root.mainloop()

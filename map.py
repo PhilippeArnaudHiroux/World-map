@@ -13,8 +13,11 @@ df = pd.DataFrame(cities)
 year_color_map = {}
 for year_dict in year_data:
     for year, color in year_dict.items():
-        # Omzetten naar hex formaat
-        year_color_map[year] = "#{:06X}".format(color)
+        # Converteer de hexadecimale string naar een integer, dan naar een hexadecimale string in #RRGGBB-formaat
+        color_int = int(color, 16)  # Zet de hex-string om naar een integer
+        hex_color = "#{:06X}".format(color_int)  # Converteer integer naar hexadecimale string in #RRGGBB-formaat
+        year_color_map[year] = hex_color
+
 
 # Controleer of de mapping correct is
 print("Year to Color Mapping:", year_color_map)

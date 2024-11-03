@@ -32,7 +32,7 @@ def fetch_location():
         messagebox.showinfo("Resultaat", result_text)
 
         # Prepare the text for saving
-        text_to_save = f"{{'name': '{city_name}', 'lon': {longitude}, 'lat': {latitude}, 'year': '{year}'}}"
+        text_to_save = f"\n{{'name': '{city_name}', 'lon': {longitude}, 'lat': {latitude}, 'year': '{year}'}}"
         
         # Open the file in append mode ('a')
         with open('location.txt', 'a') as bestand:
@@ -73,7 +73,7 @@ label_year = tk.Label(root, text="Kies een jaar:")
 label_year.pack(pady=10)
 
 # Load years from year.txt and populate the combobox
-years = load_years_from_file('year.txt')
+years = load_years_from_file('labels.txt')
 
 year_combobox = ttk.Combobox(root, values=years, state="readonly")
 year_combobox.pack(pady=10)

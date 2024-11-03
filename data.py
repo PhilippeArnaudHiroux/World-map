@@ -20,7 +20,7 @@ def import_data_from_file():
 def import_year_from_file():
     data_list = []
     
-    with open("year.txt", 'r') as file:
+    with open("labels.txt", 'r') as file:
         for line in file:
             line = line.strip()  # Verwijder witruimtes aan het begin en einde van de regel
             if line:  # Alleen niet-lege regels verwerken
