@@ -33,7 +33,7 @@ root.title("Hoofdmenu")
 
 # Load images
 city_image = ImageTk.PhotoImage(Image.open("image/city.jpg").resize((100, 100)))
-year_image = ImageTk.PhotoImage(Image.open("image/Year.jpg").resize((100, 100)))
+year_image = ImageTk.PhotoImage(Image.open("image/Label.jpg").resize((100, 100)))
 map_image = ImageTk.PhotoImage(Image.open("image/Map.jpg").resize((100, 100)))
 
 # Create a frame for buttons
