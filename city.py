@@ -55,6 +55,7 @@ def load_years_from_file(file_name):
                     continue  # Skip lines that cannot be parsed
     except FileNotFoundError:
         messagebox.showerror("Fout", f"Bestand {file_name} niet gevonden.")
+    years.sort()
     return years
 
 # Set up the Tkinter window
