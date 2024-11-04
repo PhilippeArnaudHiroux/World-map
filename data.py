@@ -13,8 +13,7 @@ def import_data_from_file():
                     else:
                         print(f"Rule is not a dictionary: {line}")
                 except (SyntaxError, ValueError) as e:
-                    print(f"Error processing rule: {line}. Error message: {e}")
-                    
+                    print(f"Error processing rule: {line}. Error message: {e}")               
     return data_list
 
 def import_year_from_file():
@@ -32,6 +31,5 @@ def import_year_from_file():
                     else:
                         print(f"Rule is not a dictionary: {line}")
                 except (SyntaxError, ValueError) as e:
-                    print(f"Error processing rule: {line}. Error message: {e}")
-                    
+                    print(f"Error processing rule: {line}. Error message: {e}")        
     return data_list
