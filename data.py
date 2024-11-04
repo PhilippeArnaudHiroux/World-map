@@ -11,9 +11,9 @@ def import_data_from_file():
                     if isinstance(data, dict):  # Verifieer dat het een dictionary is
                         data_list.append(data)
                     else:
-                        print(f"Regel is geen dictionary: {line}")
+                        print(f"Rule is not a dictionary: {line}")
                 except (SyntaxError, ValueError) as e:
-                    print(f"Fout bij het verwerken van regel: {line}. Foutmelding: {e}")
+                    print(f"Error processing rule: {line}. Error message: {e}")
                     
     return data_list
 
@@ -30,8 +30,8 @@ def import_year_from_file():
                     if isinstance(data, dict):  # Verifieer dat het een dictionary is
                         data_list.append(data)
                     else:
-                        print(f"Regel is geen dictionary: {line}")
+                        print(f"Rule is not a dictionary: {line}")
                 except (SyntaxError, ValueError) as e:
-                    print(f"Fout bij het verwerken van regel: {line}. Foutmelding: {e}")
+                    print(f"Error processing rule: {line}. Error message: {e}")
                     
     return data_list

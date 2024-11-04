@@ -29,7 +29,7 @@ def open_map_window():
 
 # Main window setup
 root = tk.Tk()
-root.title("Hoofdmenu")
+root.title("Main menu")
 
 # Load images
 city_image = ImageTk.PhotoImage(Image.open("image/city.jpg").resize((100, 100)))
