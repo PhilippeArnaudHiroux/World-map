@@ -88,10 +88,8 @@ new_label_entry.pack(pady=10)
 
 # Create a label and entry for RGB color code
 label_color = tk.Label(root, text="Choose an RGB color:")
-label_color.pack(pady=5)
 
 color_entry = tk.Entry(root, width=20)
-color_entry.pack(pady=5)
 
 # Create a button to open the color chooser
 choose_color_button = tk.Button(root, text="Choose Color", command=choose_color, width=20)
@@ -103,7 +101,6 @@ add_label_button.pack(pady=20)
 
 # Create a label for displaying the selected color
 color_display_label = tk.Label(root, text="Selected Color", width=20, height=2, bg="white", relief="groove")
-color_display_label.pack(pady=5)
 
 # Create a frame for displaying existing labels
 label_frame = tk.Frame(root)
