@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 import ast  # Voor veilig evalueren van stringrepresentaties van Python-literals
-from my_functions import get_lat_long_openweathermap, load_years_from_file
+import pycountry
+from my_functions import get_lat_long_openweathermap, load_labels_from_file
 
 def fetch_location():
     city_name = city_entry.get().capitalize()  # Verkrijg de stadsnaam die door de gebruiker is ingevoerd
@@ -112,6 +113,66 @@ def remove_city():
 
     update_city_list()  # Vernieuw de lijst van steden na verwijdering
 
+def open_manual_add_window():
+    # Maak een nieuw venster voor handmatige toevoeging van plaatsgegevens
+    manual_window = tk.Toplevel(root)
+    manual_window.title("Add Place Manually")
+    manual_window.geometry("400x350")
+    
+    # Labels en invoervelden voor handmatige toevoeging
+    tk.Label(manual_window, text="Place Name:").pack(pady=5)
+    entry_city = tk.Entry(manual_window, width=40)
+    entry_city.pack(pady=5)
+    
+    tk.Label(manual_window, text="Latitude:").pack(pady=5)
+    entry_latitude = tk.Entry(manual_window, width=40)
+    entry_latitude.pack(pady=5)
+    
+    tk.Label(manual_window, text="Longitude:").pack(pady=5)
+    entry_longitude = tk.Entry(manual_window, width=40)
+    entry_longitude.pack(pady=5)
+    
+    tk.Label(manual_window, text="Country Code (e.g., 'NL'):").pack(pady=5)
+    entry_country = tk.Entry(manual_window, width=40)
+    entry_country.pack(pady=5)
+    
+    tk.Label(manual_window, text="Choose Label:").pack(pady=5)
+    labels = load_labels_from_file('labels.txt')
+    label_combobox = ttk.Combobox(manual_window, values=labels, state="readonly", width=37)
+    label_combobox.pack(pady=5)
+    if labels:
+        label_combobox.current(0)  # Zet de standaard selectie naar de eerste label
+
+    def save_manual_entry():
+        # Haal de waarden uit de invoervelden
+        city_name = entry_city.get().capitalize()
+        latitude = entry_latitude.get()
+        longitude = entry_longitude.get()
+        country_code = entry_country.get().upper()  # Zet de landcode in hoofdletters
+        country_code = pycountry.countries.get(alpha_2=country_code).name if pycountry.countries.get(alpha_2=country_code) else "Onbekende landcode"
+        label = label_combobox.get()
+        
+        # Controleer of alle velden zijn ingevuld
+        if not city_name or not latitude or not longitude or not country_code or not label:
+            messagebox.showerror("Error", "Please fill in all fields.")
+            return
+
+        # Sla de gegevens op in het bestand
+        try:
+            latitude = float(latitude)
+            longitude = float(longitude)
+            text_to_save = (f"{{'name': '{city_name}', 'lon': {longitude}, 'lat': {latitude}, "
+                            f"'label': '{label}', 'country': '{country_code}'}}")
+            with open('location.txt', 'a') as bestand:
+                bestand.write(text_to_save + '\n')
+            messagebox.showinfo("Success", f"{city_name} has been added manually.")
+            manual_window.destroy()  # Sluit het venster na succesvolle opslag
+        except ValueError:
+            messagebox.showerror("Error", "Latitude and Longitude must be valid numbers.")
+
+    # Knop om de handmatig ingevoerde gegevens op te slaan
+    tk.Button(manual_window, text="Save Place", command=save_manual_entry, fg="green").pack(pady=20)
+
 # Instellen van het Tkinter-venster
 root = tk.Tk()
 root.title("Request Cities Coordinates")
@@ -132,7 +193,7 @@ label_year = tk.Label(main_frame, text="Choose a label:")
 label_year.pack(pady=10)
 
 # Jaren laden vanuit labels.txt en combobox invullen
-labels = load_years_from_file('labels.txt')
+labels = load_labels_from_file('labels.txt')
 
 year_combobox = ttk.Combobox(main_frame, values=labels, state="readonly")
 year_combobox.pack(pady=10)
@@ -175,6 +236,10 @@ city_listbox.pack(pady=10)
 # Knop om de geselecteerde stad te verwijderen
 remove_city_button = tk.Button(remove_frame, text="X", command=remove_city, fg="red", font=("Arial", 20))
 remove_city_button.pack(pady=10)
+
+# Voeg de nieuwe knop toe in het hoofdscherm om een stad handmatig toe te voegen
+add_manual_button = tk.Button(main_frame, text="Add Place Manually", command=open_manual_add_window)
+add_manual_button.pack(pady=5)
 
 # Terugknop om terug te keren naar het hoofdframe
 back_button = tk.Button(remove_frame, text="Back", command=lambda: [remove_frame.pack_forget(), main_frame.pack(pady=20)])

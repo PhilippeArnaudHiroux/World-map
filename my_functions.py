@@ -19,7 +19,7 @@ def import_data_from_file():                                                    
                     print(f"Error processing rule: {line}. Error message: {e}") #Print an error message if parsing fails              
     return data_list                                                            #Return the list of dictionaries after reading all lines
 
-def import_year_from_file():                                                    #This function import the data from the labels.txt file and put it in a list
+def import_labels_from_file():                                                    #This function import the data from the labels.txt file and put it in a list
     data_list = []                                                              #Initialize an empty list to store the data dictionaries
     with open("labels.txt", 'r') as file:                                       #Open the file 'labels.txt' in read mode
         for line in file:                                                       #Iterate through each line in the file
@@ -47,7 +47,7 @@ def get_lat_long_openweathermap(city_name, api_key):                            
     else:                                                                                       #If the response does not contains any data
         return None, None                                                                       #Return None if no data is found
     
-def load_years_from_file(file_name):                                    #This function loads the years as a label from 'labels.txt'
+def load_labels_from_file(file_name):                                   #This function loads the years as a label from 'labels.txt'
     years = []                                                          #Initialize an empty list to store the years
     try:                                                                #Try this code
         with open(file_name, 'r') as file:                              #Open the specified file in read mode

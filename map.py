@@ -1,10 +1,10 @@
 import plotly.express as px
 import pandas as pd
-from my_functions import import_data_from_file, import_year_from_file
+from my_functions import import_data_from_file, import_labels_from_file
 
 # Importeer de data
 cities = import_data_from_file()         # Informatie over de steden
-year_data = import_year_from_file()      # Informatie over de kleuren per jaar
+year_data = import_labels_from_file()      # Informatie over de kleuren per jaar
 
 # Zet de data om in een DataFrame
 df = pd.DataFrame(cities)
