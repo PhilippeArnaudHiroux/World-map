@@ -1,94 +1,80 @@
-import plotly.express as px
-import pandas as pd
-from my_functions import import_data_from_file, import_labels_from_file
+import plotly.express as px                                             #Import Plotly Express for creating interactive visualizations
+import pandas as pd                                                     #Import pandas for data manipulation and analysis
+from my_functions import import_data_from_file, import_labels_from_file #Import custom functions for importing data and labels from files
 
-# Importeer de data
-cities = import_data_from_file()         # Informatie over de steden
-year_data = import_labels_from_file()      # Informatie over de kleuren per jaar
+#####################################Import the data
+cities=import_data_from_file()      #Get information about the cities from a file
+label_data=import_labels_from_file()#Get information about the colors associated with each year from a file
 
-# Zet de data om in een DataFrame
-df = pd.DataFrame(cities)
+#########################Convert the data into a DataFrame
+df=pd.DataFrame(cities) #Create a pandas DataFrame from the cities data
 
-# Maak een kleur-mapping van jaar naar kleur
-year_color_map = {}
-for year_dict in year_data:
-    for year, color in year_dict.items():
-        # Converteer de hexadecimale string naar een integer, dan naar een hexadecimale string in #RRGGBB-formaat
-        color_int = int(color, 16)  # Zet de hex-string om naar een integer
-        hex_color = "#{:06X}".format(color_int)  # Converteer integer naar hexadecimale string in #RRGGBB-formaat
-        year_color_map[year] = hex_color
+#################################################Make a color mapping from label to color
+year_color_map={}                               #Initialize an empty dictionary to hold the mapping of years to colors
+for label_dict in label_data:                   #Iterate through each dictionary in the year_data
+    for year, color in label_dict.items():      #Iterate through the year-color pairs in the dictionary
+        color_int=int(color, 16)                #Convert the hex string to an integer
+        hex_color="#{:06X}".format(color_int)   #Convert the integer back to a hexadecimal string in #RRGGBB format
+        year_color_map[year]=hex_color          #Map the year to its corresponding hex color in the dictionary
+df['color']=df['label'].map(year_color_map)     #Add a new column 'color' to the DataFrame by mapping the 'label' column to the year_color_map
 
-
-# Controleer of de mapping correct is
-print("Year to Color Mapping:", year_color_map)
-
-# Voeg een kleur toe aan de DataFrame op basis van het jaar
-df['color'] = df['label'].map(year_color_map)
-
-# Controleer of de kleuren correct zijn toegewezen aan de DataFrame
-print("DataFrame with colors:", df)
-
-# Maak de interactieve kaart
-fig = px.scatter_geo(df,
-                    lon='lon',
-                    lat='lat',
-                    hover_name='name',  # De naam van de stad verschijnt bij hover
-                    title='My world map!',
-                    projection='natural earth',
-                    color='label',  # Gebruik het jaar voor kleuren
-                    color_discrete_map=year_color_map,  # Koppel kleuren aan jaren
-                    hover_data={'lon': False, 'lat': False, 'label': False}  # Verberg lon, lat en year bij hover
-                    )
-
-# Pas de grootte van de stippen aan
-fig.update_traces(marker=dict(size=10))  # Pas de grootte naar wens aan
-
-# Voeg landgrenzen toe
-fig.update_geos(
-    showland=True,
-    landcolor='lightgreen',
-    showocean=True,
-    oceancolor='lightblue',
-    showcoastlines=True,
-    coastlinecolor='black',
-    showlakes=True,
-    lakecolor='lightblue',
-    showrivers=True,
-    rivercolor='blue',
-    showcountries=True,  # Deze regel zorgt voor de landgrenzen
-    countrycolor='black',
-    showframe=False,  # Verberg frame rond de kaart
-    resolution=50,  # Hogere resolutie voor meer details
-    projection_scale=1,  # Schaal van de projectie
-    bgcolor='black'  # Achtergrondkleur van de kaart
+fig=px.scatter_geo(##########################################Create a scatter geo plot using Plotly Express
+    df,                                                     #Use the DataFrame df as the data source
+    lon='lon',                                              #Specify the longitude column for the scatter plot
+    lat='lat',                                              #Specify the latitude column for the scatter plot
+    hover_name='name',                                      #Display the city name when hovering over a point
+    title='My world map!',                                  #Set the title of the map
+    projection='natural earth',                             #Use the 'natural earth' projection for the map
+    color='label',                                          #Use the 'label' column to determine the color of the points
+    color_discrete_map=year_color_map,                      #Map colors to years using the year_color_map
+    hover_data={'lon': False, 'lat': False, 'label': False} #Hide longitude, latitude, and label data when hovering
 )
 
-# Pas de layout aan voor beter zicht
-fig.update_layout(
-    title='My world map!',
-    geo=dict(
-        showland=True,
-        landcolor='lightgreen',
-        oceancolor='lightblue',
-        showocean=True,
-        showcoastlines=True,
-        coastlinecolor='black',
-        showlakes=True,
-        lakecolor='lightblue',
-        showrivers=True,
-        rivercolor='blue',
-        showcountries=True,
-        countrycolor='black'
+##########################################Change the size of the markers
+fig.update_traces(marker=dict(size=10))  #Adjust the size of the markers to 10 (you can change this value as desired)
+
+fig.update_geos(#############Update the geographic features of the figure
+    showland=True,          #Enable the display of land areas
+    landcolor='lightgreen', #Set the color of the land to light green
+    showocean=True,         #Enable the display of ocean areas
+    oceancolor='lightblue', #Set the color of the ocean to light blue
+    showcoastlines=True,    #Enable the display of coastlines
+    coastlinecolor='black', #Set the color of the coastlines to black
+    showlakes=True,         #Enable the display of lakes
+    lakecolor='lightblue',  #Set the color of lakes to light blue
+    showrivers=True,        #Enable the display of rivers
+    rivercolor='blue',      #Set the color of rivers to blue
+    showcountries=True,     #Enable the display of country borders
+    countrycolor='black',   #Set the color of country borders to black
+    showframe=False,        #Hide the frame around the map
+    resolution=50,          #Set a higher resolution for more detail
+    projection_scale=1,     #Set the scale of the projection
+    bgcolor='black'         #Set the background color of the map to black
+)
+
+fig.update_layout(###############Update the layout of the figure for better visibility
+    title='My world map!',      #Set the title of the map
+    geo=dict(                   #Define geographic features for the layout
+        showland=True,          #Enable the display of land areas
+        landcolor='lightgreen', #Set the color of the land to light green
+        oceancolor='lightblue', #Set the color of the ocean to light blue
+        showocean=True,         #Enable the display of ocean areas
+        showcoastlines=True,    #Enable the display of coastlines
+        coastlinecolor='black', #Set the color of coastlines to black
+        showlakes=True,         #Enable the display of lakes
+        lakecolor='lightblue',  #Set the color of lakes to light blue
+        showrivers=True,        #Enable the display of rivers
+        rivercolor='blue',      #Set the color of rivers to blue
+        showcountries=True,     #Enable the display of country borders
+        countrycolor='black'    #Set the color of country borders to black
     ),
-    showlegend=True,  # Zorg ervoor dat de legende wordt getoond
-    legend_title_text='Labels',  # Titel van de legende
-    plot_bgcolor='black',  # Achtergrondkleur van de plot
-    paper_bgcolor='black',  # Achtergrondkleur van de pagina
-    font=dict(color='white')  # Kleur van de tekst
+    showlegend=True,            #Ensure the legend is displayed
+    legend_title_text='Labels', #Set the title of the legend
+    plot_bgcolor='black',       #Set the background color of the plot to black
+    paper_bgcolor='black',      #Set the background color of the entire page to black
+    font=dict(color='white')    #Set the font color to white
 )
 
-# Sla de kaart op als HTML-bestand
-fig.write_html("world_map.html")
-
-# Toon de kaart
-fig.show()
+####################################Show map
+fig.write_html("world_map.html")    #Save the figure as an HTML file named "world_map.html"
+fig.show()                          #Display the figure in the default web browser or viewer
