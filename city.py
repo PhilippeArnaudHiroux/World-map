@@ -12,8 +12,7 @@ def fetch_location():###########################################################
     if not year:                                                                                                                    #If there is no label
         messagebox.showerror("Error", "Select a label.")                                                                            #Show error if no label (year) is selected
         return                                                                                                                      #Go out the function
-    api_key='29c971711cb3db394b7fb7ad51ac44cb'                                                                                      #API key for accessing location data
-    latitude, longitude, country=get_lat_long_openweathermap(city_name, api_key)                                                    #Fetch latitude, longitude, and country using API
+    latitude, longitude, country=get_lat_long_openweathermap(city_name)                                                             #Fetch latitude, longitude, and country using API
     if latitude and longitude:                                                                                                      #If there is a latitude and longitude found
         result_text=(f"The latitude of {city_name} is: {latitude}\n"                                                                #Format result text with location details
                      f"The longitude of {city_name} is: {longitude}\n"                                                              #Format result text with location details

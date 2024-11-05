@@ -1,9 +1,9 @@
-import requests
-from tkinter import messagebox, ttk
-import ast  # To safely evaluate string representations of Python literals
-import pycountry
+import requests                 #Import the requests library to handle HTTP requests
+from tkinter import messagebox  #Import specific modules from tkinter for message boxes and themed widgets
+import ast                      #Import ast module to safely evaluate string representations of Python literals
+import pycountry                #Import pycountry to work with country information and codes
 
-def import_data_from_file():                                                    #This function import the data from the location.txt file and put it in a list
+def import_data_from_file():#####################################################This function import the data from the location.txt file and put it in a list
     data_list = []                                                              #Create an empty list to store the data dictionaries
     with open("location.txt", 'r') as file:                                     #Open the file 'location.txt' in read mode
         for line in file:                                                       #Iterate through each line in the file
@@ -19,7 +19,7 @@ def import_data_from_file():                                                    
                     print(f"Error processing rule: {line}. Error message: {e}") #Print an error message if parsing fails              
     return data_list                                                            #Return the list of dictionaries after reading all lines
 
-def import_labels_from_file():                                                    #This function import the data from the labels.txt file and put it in a list
+def import_labels_from_file():###################################################This function import the data from the labels.txt file and put it in a list
     data_list = []                                                              #Initialize an empty list to store the data dictionaries
     with open("labels.txt", 'r') as file:                                       #Open the file 'labels.txt' in read mode
         for line in file:                                                       #Iterate through each line in the file
@@ -35,19 +35,20 @@ def import_labels_from_file():                                                  
                     print(f"Error processing rule: {line}. Error message: {e}") #Print an error message if parsing fails      
     return data_list                                                            #Return the list of dictionaries after reading all lines
 
-def get_lat_long_openweathermap(city_name, api_key):                                            #This function asks for the longitude and latitude of a city from openweather
-    url = f"http://api.openweathermap.org/geo/1.0/direct?q={city_name}&limit=1&appid={api_key}" #Construct the API request URL for OpenWeatherMap's geocoding service
-    response = requests.get(url)                                                                #Send a GET request to the constructed URL
-    data = response.json()                                                                      #Parse the JSON response from the API
-    if data:                                                                                    #Check if the response contains any data
-        location = data[0]                                                                      #Extract the first location result from the response
-        country_code = location['country']
-        country_name = pycountry.countries.get(alpha_2=country_code).name if pycountry.countries.get(alpha_2=country_code) else "Onbekende landcode"
-        return location['lat'], location['lon'], country_name                            #Return the latitude and longitude of the location
-    else:                                                                                       #If the response does not contains any data
-        return None, None                                                                       #Return None if no data is found
-    
-def load_labels_from_file(file_name):                                   #This function loads the years as a label from 'labels.txt'
+def get_lat_long_openweathermap(city_name):#############################################################################################################This function asks for the longitude and latitude of a city from OpenWeather
+    api_key='29c971711cb3db394b7fb7ad51ac44cb'                                                                                                          #API key for accessing location data
+    url=f"http://api.openweathermap.org/geo/1.0/direct?q={city_name}&limit=1&appid={api_key}"                                                           #Construct the API request URL for OpenWeatherMap's geocoding service
+    response=requests.get(url)                                                                                                                          #Send a GET request to the constructed URL
+    data=response.json()                                                                                                                                #Parse the JSON response from the API
+    if data:                                                                                                                                            #Check if the response contains any data
+        location=data[0]                                                                                                                                #Extract the first location result from the response
+        country_code=location['country']                                                                                                                #Get the country code from the location data
+        country_name=pycountry.countries.get(alpha_2=country_code).name if pycountry.countries.get(alpha_2=country_code) else "Unknown country code"    #Retrieve the country name using the country code, handle case of unknown country code
+        return location['lat'], location['lon'], country_name                                                                                           #Return the latitude and longitude of the location along with the country name
+    else:                                                                                                                                               #If the response does not contain any data
+        return None, None                                                                                                                               #Return None if no data is found
+
+def load_labels_from_file(file_name):####################################This function loads the years as a label from 'labels.txt'
     years = []                                                          #Initialize an empty list to store the years
     try:                                                                #Try this code
         with open(file_name, 'r') as file:                              #Open the specified file in read mode
