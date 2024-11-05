@@ -1,129 +1,159 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
-import ast  # To safely evaluate string representations of Python literals
+import ast  # Voor veilig evalueren van stringrepresentaties van Python-literals
 from my_functions import get_lat_long_openweathermap, load_years_from_file
 
 def fetch_location():
-    city_name = city_entry.get()  # Get the city name entered by the user
-    year = year_combobox.get()  # Get selected year from the combobox
+    city_name = city_entry.get()  # Verkrijg de stadsnaam die door de gebruiker is ingevoerd
+    year = year_combobox.get()  # Verkrijg het geselecteerde jaar uit de combobox
     
-    if not year:  # Check if a year is selected
-        messagebox.showerror("Error", "Select a year.")  # Show an error if no year is selected
+    if not year:  # Controleer of er een jaar is geselecteerd
+        messagebox.showerror("Error", "Selecteer een jaar.")  # Toon een foutmelding als er geen jaar is geselecteerd
         return
     
-    api_key = '29c971711cb3db394b7fb7ad51ac44cb'  # Replace with your own API key for OpenWeatherMap
-    latitude, longitude, country = get_lat_long_openweathermap(city_name, api_key)  # Fetch latitude and longitude for the city
+    api_key = '29c971711cb3db394b7fb7ad51ac44cb'  # Vervang door je eigen API-sleutel voor OpenWeatherMap
+    latitude, longitude, country = get_lat_long_openweathermap(city_name, api_key)  # Verkrijg breedte- en lengtegraad voor de stad
 
-    if latitude and longitude:  # If coordinates are found
-        result_text = (f"The latitude of {city_name} is: {latitude}\n"  # Prepare result message with latitude
-                       f"The longitude of {city_name} is: {longitude}\n"  # Add longitude to result message
-                       f"The country of {city_name} is: {country}\n"  # Add longitude to result message
-                       f"Label: {year}")  # Add selected year as label to result message
-        messagebox.showinfo("Result", result_text)  # Show result in an info messagebox 
-        text_to_save = f"{{'name': '{city_name}', 'lon': {longitude}, 'lat': {latitude}, 'label': '{year}', 'country': '{country}'}}"  # Prepare the text for saving to file
+    if latitude and longitude:  # Als coördinaten zijn gevonden
+        result_text = (f"De breedtegraad van {city_name} is: {latitude}\n"  # Bereid resultaatbericht voor met breedtegraad
+                       f"De lengtegraad van {city_name} is: {longitude}\n"  # Voeg lengtegraad toe aan resultaatbericht
+                       f"Het land van {city_name} is: {country}\n"  # Voeg land toe aan resultaatbericht
+                       f"Label: {year}")  # Voeg geselecteerd jaar als label toe aan resultaatbericht
+        messagebox.showinfo("Resultaat", result_text)  # Toon resultaat in een info-bericht
+        text_to_save = f"{{'name': '{city_name}', 'lon': {longitude}, 'lat': {latitude}, 'label': '{year}', 'country': '{country}'}}"  # Bereid de tekst voor opslaan in bestand
         
-        with open('location.txt', 'a') as bestand:  # Open 'location.txt' for appending
-            bestand.write(text_to_save + '\n')  # Write the prepared text to the file, followed by a newline character
+        with open('location.txt', 'a') as bestand:  # Open 'location.txt' voor toevoegen
+            bestand.write(text_to_save + '\n')  # Schrijf de voorbereide tekst naar het bestand, gevolgd door een nieuwe regel
     else:
-        messagebox.showerror("Error", f"No data found for {city_name}.")  # Show an error if no location data is found
+        messagebox.showerror("Error", f"Geen gegevens gevonden voor {city_name}.")  # Toon een foutmelding als er geen locatiegegevens zijn gevonden
 
 def show_remove_frame():
-    main_frame.pack_forget()  # Hide the main frame
-    remove_frame.pack(pady=20)  # Show the remove frame
-    update_city_list()
+    main_frame.pack_forget()  # Verberg het hoofdscherm
+    remove_frame.pack(pady=20)  # Toon het verwijderformulier
+    update_country_list()  # Update de lijst van landen
+    country_combobox.current(0)  # Zet de standaard selectie naar "Alle Steden"
+    update_city_list("Alle steden")  # Update de stadlijst direct bij het openen
 
-def update_city_list():
-    # Clear the current list
-    for city in city_listbox.get(0, tk.END):
-        city_listbox.delete(0, tk.END)
-    
-    # Load saved cities
+
+def update_country_list():
+    country_combobox['values'] = []
+    countries = set()  # Gebruik een set om duplicaten te vermijden
+
     try:
         with open('location.txt', 'r') as bestand:
             lines = bestand.readlines()
             for line in lines:
-                data = ast.literal_eval(line.strip())  # Safely evaluate the string representation
-                city_listbox.insert(tk.END, data['name'])  # Insert city names into the listbox
+                try:
+                    data = ast.literal_eval(line.strip())  # Veilig evalueren van de stringrepresentatie
+                    countries.add(data['country'])  # Voeg land toe aan de set
+                except SyntaxError as e:
+                    print(f"Fout bij het parseren van regel: {line.strip()} - {e}")  # Print foutmelding
+
+        country_list = ["Alle steden"] + sorted(list(countries))  # Voeg optie toe om alle steden te tonen
+        country_combobox['values'] = list(country_list)  # Zet de landen in de combobox
+        update_city_list()  # Update de stadlijst direct bij het openen
     except FileNotFoundError:
-        pass  # If the file doesn't exist, just do nothing
+        pass  # Als het bestand niet bestaat, doe dan niets
+
+def update_city_list(event=None):
+    # Leeg de huidige lijst
+    city_listbox.delete(0, tk.END)
+
+    selected_country = country_combobox.get()  # Verkrijg het geselecteerde land
+    try:
+        with open('location.txt', 'r') as bestand:
+            lines = bestand.readlines()
+            for line in lines:
+                data = ast.literal_eval(line.strip())  # Veilig evalueren van de stringrepresentatie
+                # Controleer of 'Alle Steden' is geselecteerd of het land overeenkomt
+                if selected_country == "Alle steden" or data['country'] == selected_country:
+                    city_listbox.insert(tk.END, data['name'])  # Voeg stad toe aan de listbox
+    except FileNotFoundError:
+        pass  # Als het bestand niet bestaat, doe dan niets
+
 
 
 def remove_city():
-    selected_city_index = city_listbox.curselection()  # Get the selected city index
-    if not selected_city_index:  # If no city is selected
-        messagebox.showerror("Error", "Select a city to remove.")  # Show error
+    selected_city_index = city_listbox.curselection()  # Verkrijg de geselecteerde stad
+    if not selected_city_index:  # Als er geen stad is geselecteerd
+        messagebox.showerror("Error", "Selecteer een stad om te verwijderen.")  # Toon foutmelding
         return
 
-    selected_city = city_listbox.get(selected_city_index)  # Get the selected city
-    # Read all lines and filter out the selected city
+    selected_city = city_listbox.get(selected_city_index)  # Verkrijg de geselecteerde stad
+    # Lees alle regels en filter de geselecteerde stad eruit
     with open('location.txt', 'r') as bestand:
         lines = bestand.readlines()
 
-    with open('location.txt', 'w') as bestand:  # Open file to write
+    with open('location.txt', 'w') as bestand:  # Open bestand om te schrijven
         for line in lines:
             data = ast.literal_eval(line.strip())
-            if data['name'] != selected_city:  # Only write back if the city name doesn't match
-                bestand.write(line)  # Write the line back to file
+            if data['name'] != selected_city:  # Alleen schrijven als de stad niet overeenkomt
+                bestand.write(line)  # Schrijf de regel terug naar het bestand
 
-    update_city_list()  # Refresh the city list after removal
+    update_city_list()  # Vernieuw de lijst van steden na verwijdering
 
-# Set up the Tkinter window
+# Instellen van het Tkinter-venster
 root = tk.Tk()
-root.title("Request City Coordinates")
+root.title("Vraag Coördinaten van Steden aan")
 
-# Create main frame for city coordinates
+# Hoofdframe voor stadcoördinaten
 main_frame = tk.Frame(root)
 main_frame.pack(pady=20)
 
-# Create a label and entry for city name input
-label_city = tk.Label(main_frame, text="Enter the name of a place:")
+# Label en invoer voor stadnaam
+label_city = tk.Label(main_frame, text="Voer de naam van een plaats in:")
 label_city.pack(pady=10)
 
 city_entry = tk.Entry(main_frame, width=50)
 city_entry.pack(pady=10)
 
-# Create a label for year selection
-label_year = tk.Label(main_frame, text="Choose a label:")
+# Label voor jaarselectie
+label_year = tk.Label(main_frame, text="Kies een label:")
 label_year.pack(pady=10)
 
-# Load years from year.txt and populate the combobox
+# Jaren laden vanuit labels.txt en combobox invullen
 years = load_years_from_file('labels.txt')
 
 year_combobox = ttk.Combobox(main_frame, values=years, state="readonly")
 year_combobox.pack(pady=10)
-if years:  # Set the default selected year to the first one if available
+if years:  # Zet het standaard geselecteerde jaar op het eerste als het beschikbaar is
     year_combobox.current(0)
 
-# Create a button to fetch the coordinates
+# Knop om coördinaten op te halen
 fetch_button = tk.Button(main_frame, text="+", command=fetch_location, fg="green", font=("Arial", 20))
 fetch_button.pack(pady=20)
 
-# Create a button to show the remove city frame
-remove_button = tk.Button(main_frame, text="Remove City", command=show_remove_frame)
+# Knop om het verwijderformulier te tonen
+remove_button = tk.Button(main_frame, text="Verwijder Stad", command=show_remove_frame)
 remove_button.pack(pady=5)
 
-# Frame for removing cities
+# Frame voor het verwijderen van steden
 remove_frame = tk.Frame(root)
 
-# Create a label for the remove city section
-label_remove = tk.Label(remove_frame, text="Select a city to remove:")
+# Label voor het verwijderen van stadsectie
+label_remove = tk.Label(remove_frame, text="Selecteer een land en een stad om te verwijderen:")
 label_remove.pack(pady=10)
 
-# Create a listbox to display saved cities
+# Combobox voor het selecteren van landen
+country_combobox = ttk.Combobox(remove_frame, state="readonly")
+country_combobox.pack(pady=10)
+country_combobox.bind("<<ComboboxSelected>>", update_city_list)  # Bind de selectie aan de functie
+
+# Listbox om opgeslagen steden weer te geven
 city_listbox = tk.Listbox(remove_frame, width=50)
 city_listbox.pack(pady=10)
 
-# Create a button to remove the selected city
+# Knop om de geselecteerde stad te verwijderen
 remove_city_button = tk.Button(remove_frame, text="X", command=remove_city, fg="red", font=("Arial", 20))
 remove_city_button.pack(pady=10)
 
-# Back button to return to the main frame
-back_button = tk.Button(remove_frame, text="Back to Main", command=lambda: [remove_frame.pack_forget(), main_frame.pack(pady=20)])
+# Terugknop om terug te keren naar het hoofdframe
+back_button = tk.Button(remove_frame, text="Terug naar Hoofd", command=lambda: [remove_frame.pack_forget(), main_frame.pack(pady=20)])
 back_button.pack(pady=10)
 
-# Footer label
-footer_label = tk.Label(root, text="Made by Philippe-Arnaud Hiroux ©", font=("Arial", 10))
-footer_label.pack(side=tk.BOTTOM, pady=10)  # Place the label at the bottom with some space
+# Voettekst
+footer_label = tk.Label(root, text="Gemaakt door Philippe-Arnaud Hiroux ©", font=("Arial", 10))
+footer_label.pack(side=tk.BOTTOM, pady=10)  # Plaats het label onderaan met wat ruimte
 
-# Run the Tkinter event loop
+# Voer de Tkinter-evenloop uit
 root.mainloop()
