@@ -23,23 +23,22 @@ for year_dict in year_data:
 print("Year to Color Mapping:", year_color_map)
 
 # Voeg een kleur toe aan de DataFrame op basis van het jaar
-df['color'] = df['year'].map(year_color_map)
+df['color'] = df['label'].map(year_color_map)
 
 # Controleer of de kleuren correct zijn toegewezen aan de DataFrame
 print("DataFrame with colors:", df)
 
 # Maak de interactieve kaart
-fig = px.scatter_geo(
-    df,
-    lon='lon',
-    lat='lat',
-    hover_name='name',  # De naam van de stad verschijnt bij hover
-    title='My world map!',
-    projection='natural earth',
-    color='year',  # Gebruik het jaar voor kleuren
-    color_discrete_map=year_color_map,  # Koppel kleuren aan jaren
-    hover_data={'lon': False, 'lat': False, 'year': False}  # Verberg lon, lat en year bij hover
-)
+fig = px.scatter_geo(df,
+                    lon='lon',
+                    lat='lat',
+                    hover_name='name',  # De naam van de stad verschijnt bij hover
+                    title='My world map!',
+                    projection='natural earth',
+                    color='label',  # Gebruik het jaar voor kleuren
+                    color_discrete_map=year_color_map,  # Koppel kleuren aan jaren
+                    hover_data={'lon': False, 'lat': False, 'label': False}  # Verberg lon, lat en year bij hover
+                    )
 
 # Pas de grootte van de stippen aan
 fig.update_traces(marker=dict(size=10))  # Pas de grootte naar wens aan
@@ -82,7 +81,7 @@ fig.update_layout(
         countrycolor='black'
     ),
     showlegend=True,  # Zorg ervoor dat de legende wordt getoond
-    legend_title_text='Year',  # Titel van de legende
+    legend_title_text='Labels',  # Titel van de legende
     plot_bgcolor='black',  # Achtergrondkleur van de plot
     paper_bgcolor='black',  # Achtergrondkleur van de pagina
     font=dict(color='white')  # Kleur van de tekst

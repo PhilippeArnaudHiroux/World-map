@@ -1,6 +1,7 @@
 import requests
 from tkinter import messagebox, ttk
 import ast  # To safely evaluate string representations of Python literals
+import pycountry
 
 def import_data_from_file():                                                    #This function import the data from the location.txt file and put it in a list
     data_list = []                                                              #Create an empty list to store the data dictionaries
@@ -40,7 +41,9 @@ def get_lat_long_openweathermap(city_name, api_key):                            
     data = response.json()                                                                      #Parse the JSON response from the API
     if data:                                                                                    #Check if the response contains any data
         location = data[0]                                                                      #Extract the first location result from the response
-        return location['lat'], location['lon']                                                 #Return the latitude and longitude of the location
+        country_code = location['country']
+        country_name = pycountry.countries.get(alpha_2=country_code).name if pycountry.countries.get(alpha_2=country_code) else "Onbekende landcode"
+        return location['lat'], location['lon'], country_name                            #Return the latitude and longitude of the location
     else:                                                                                       #If the response does not contains any data
         return None, None                                                                       #Return None if no data is found
     

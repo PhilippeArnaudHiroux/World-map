@@ -12,14 +12,15 @@ def fetch_location():
         return
     
     api_key = '29c971711cb3db394b7fb7ad51ac44cb'  # Replace with your own API key for OpenWeatherMap
-    latitude, longitude = get_lat_long_openweathermap(city_name, api_key)  # Fetch latitude and longitude for the city
+    latitude, longitude, country = get_lat_long_openweathermap(city_name, api_key)  # Fetch latitude and longitude for the city
 
     if latitude and longitude:  # If coordinates are found
         result_text = (f"The latitude of {city_name} is: {latitude}\n"  # Prepare result message with latitude
                        f"The longitude of {city_name} is: {longitude}\n"  # Add longitude to result message
+                       f"The country of {city_name} is: {country}\n"  # Add longitude to result message
                        f"Label: {year}")  # Add selected year as label to result message
         messagebox.showinfo("Result", result_text)  # Show result in an info messagebox 
-        text_to_save = f"{{'name': '{city_name}', 'lon': {longitude}, 'lat': {latitude}, 'label': '{year}'}}"  # Prepare the text for saving to file
+        text_to_save = f"{{'name': '{city_name}', 'lon': {longitude}, 'lat': {latitude}, 'label': '{year}', 'country': '{country}'}}"  # Prepare the text for saving to file
         
         with open('location.txt', 'a') as bestand:  # Open 'location.txt' for appending
             bestand.write(text_to_save + '\n')  # Write the prepared text to the file, followed by a newline character
