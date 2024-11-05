@@ -120,27 +120,28 @@ def load_main_screen():##########Function to return to the main screen
 root=tk.Tk()                                #Create the main window for the application
 root.title("Request Cities Coordinates")    #Set the title of the window to "Request Cities Coordinates"
 
-
-########################################################################################################Main frame for city coordinates
-main_frame=tk.Frame(root)                                                                               #Create a frame to hold the main content
-main_frame.pack(pady=20)                                                                                #Pack the frame into the main window with padding of 20 pixels at the top
-label_city=tk.Label(main_frame, text="Enter the name of a place:")                                      #Create a label prompting the user to enter a city name
+#########################################################################################################Main frame for city coordinates
+main_frame = tk.Frame(root)                                                                             #Create a frame to hold the main content
+main_frame.pack(pady=20)                                                                                #Pack the frame into the main window with padding of 20 pixels
+label_city = tk.Label(main_frame, text="Enter the name of a place:")                                    #Create a label prompting the user to enter a city name
 label_city.pack(pady=10)                                                                                #Pack the label into the main frame with padding of 10 pixels
-city_entry=tk.Entry(main_frame, width=50)                                                               #Create an entry field for the city name with a width of 50 characters
+city_entry = tk.Entry(main_frame, width=50)                                                             #Create an entry field for the city name with a width of 50 characters
 city_entry.pack(pady=10)                                                                                #Pack the entry field into the main frame with padding of 10 pixels
-label_year=tk.Label(main_frame, text="Choose a label:")                                                 #Create a label prompting the user to choose a label
+label_year = tk.Label(main_frame, text="Choose a label:")                                               #Create a label prompting the user to choose a label
 label_year.pack(pady=10)                                                                                #Pack the label into the main frame with padding of 10 pixels
-labels=load_labels_from_file('labels.txt')                                                              #Load labels from a file into a list
-year_combobox=ttk.Combobox(main_frame, values=labels, state="readonly")                                 #Create a combobox for selecting a label, set to read-only
+labels = load_labels_from_file('labels.txt')                                                            #Load labels from a file into a list
+year_combobox = ttk.Combobox(main_frame, values=labels, state="readonly")                               #Create a combobox for selecting a label, set to read-only
 year_combobox.pack(pady=10)                                                                             #Pack the combobox into the main frame with padding of 10 pixels
 if labels:                                                                                              #Check if there are any labels available
     year_combobox.current(0)                                                                            #Set the default selected label to the first item if labels exist
-fetch_button=tk.Button(main_frame, text="+", command=fetch_location, fg="green", font=("Arial", 20))    #Create a button to fetch location coordinates
+fetch_button = tk.Button(main_frame, text="+", command=fetch_location, fg="green", font=("Arial", 20))  #Create a button to fetch location coordinates
 fetch_button.pack(pady=20)                                                                              #Pack the button into the main frame with padding of 20 pixels
-manual_button=tk.Button(main_frame, text="Add Place Manually", command=open_manual_add_screen)          #Create a button to open the manual addition screen
-manual_button.pack(pady=5)                                                                              #Pack the button into the main frame with padding of 5 pixels
-remove_button=tk.Button(main_frame, text="Delete place", command=show_remove_frame)                     #Create a button to show the remove place frame
-remove_button.pack(pady=5)                                                                              #Pack the button into the main frame with padding of 5 pixels
+button_frame = tk.Frame(main_frame)                                                                     #Create a new frame to hold the buttons
+button_frame.pack(pady=5)                                                                               #Pack the button frame into the main frame with padding of 5 pixels
+manual_button = tk.Button(button_frame, text="Add Place Manually", command=open_manual_add_screen)      #Create a button to open the manual addition screen
+manual_button.pack(side=tk.LEFT, padx=5)                                                                #Pack the manual button to the left side with padding of 5 pixels
+remove_button = tk.Button(button_frame, text="Delete place", command=show_remove_frame)                 #Create a button to show the remove place frame
+remove_button.pack(side=tk.LEFT, padx=5)                                                                #Pack the remove button to the left side with padding of 5 pixels
 
 #####################################################################################Frame for manual entry
 manual_frame=tk.Frame(root)                                                         #Create a frame for manual input and associate it with the main window
