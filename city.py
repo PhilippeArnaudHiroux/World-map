@@ -4,8 +4,6 @@ import ast                                                                  #Imp
 import pycountry                                                            #Import pycountry to work with country information and codes
 from my_functions import get_lat_long_openweathermap, load_labels_from_file #Import custom functions for fetching location data and loading labels from a file
 
-
-
 def fetch_location():################################################################################################################Function to fetch location data
     city_name=city_entry.get().capitalize()                                                                                         #Get the city name from the entry field and capitalize it
     year=year_combobox.get()                                                                                                        #Get the selected label (year) from the combobox

@@ -25,7 +25,7 @@ def add_label():################################################################
         return                                                                              #Exit the function if inputs are invalid
     with open('labels.txt', 'a') as file:                                                   #Open the labels.txt file in append mode
         color_code = color_code.replace("#", "0x")                                          #Convert color code format from #RRGGBB to 0xRRGGBB
-        file.write(f"\n{{'{label}': '{color_code}'}}")                                      #Write the new label and color code in the specified format, ensuring it's on a new line
+        file.write(f"{{'{label}': '{color_code}'}}\n")                                      #Write the new label and color code in the specified format, ensuring it's on a new line
     update_label_display()                                                                  #Call the function to refresh the display of labels
     new_label_entry.delete(0, tk.END)                                                       #Clear the label entry field after adding
     color_display_label.config(bg="white")                                                  #Reset the background color display to white after adding a label
@@ -92,20 +92,23 @@ def load_labels_for_deletion():#################################################
         colored_label = tk.Label(checkbox_frame_inner, text=label_name, bg=color_code_hex, width=20, anchor='w', relief="groove")   #Create a colored label with the label name inside
         colored_label.pack(side='left', padx=5)                                                                                     #Place the colored label next to the checkbox
 
-def delete_labels():#####################################################################A function to delete labels
-    labels_to_delete = [label for label, var in label_vars.items() if var.get() == 1]   #Create a list of labels to delete based on the selected checkboxes    
-    if not labels_to_delete:                                                            #Show an error message if no labels are selected for deletion
-        messagebox.showerror("Error", "Please select at least one label to delete.")    #Display an error message box
-        return                                                                          #Exit the function if no labels are selected    
-    labels = load_labels_from_file('labels.txt')                                        #Load existing labels from the file
-    for selected_label in labels_to_delete:                                             #Remove the selected labels from the dictionary
-        if selected_label in labels:                                                    #Check if the selected label exists in the loaded labels
-            del labels[selected_label]                                                  #Delete the selected label from the labels dictionary
-    with open('labels.txt', 'w') as file:                                               #Write the updated labels back to the file 
-        for label, color in labels.items():                                             #Iterate through each label and its corresponding color
-            file.write(f"\n{{'{label}': '{color}'}}")                                   #Write the label and its color to the file in the required format
-    load_labels_for_deletion()                                                          #Call the function to refresh the checkboxes
-    messagebox.showinfo("Success", f"Deleted labels: {', '.join(labels_to_delete)}.")   #Show a success message with the names of the deleted labels
+def delete_labels():##################################################################### Een functie om labels te verwijderen
+    labels_to_delete = [label for label, var in label_vars.items() if var.get() == 1]   # Maak een lijst van te verwijderen labels op basis van de geselecteerde checkboxen
+    if not labels_to_delete:                                                            # Toon een foutmelding als er geen labels zijn geselecteerd voor verwijdering
+        messagebox.showerror("Error", "Selecteer alstublieft ten minste één label om te verwijderen.")  # Toon een foutmeldingsvenster
+        return                                                                          # Verlaat de functie als er geen labels zijn geselecteerd
+    
+    labels = load_labels_from_file('labels.txt')                                        # Laad bestaande labels uit het bestand
+    for selected_label in labels_to_delete:                                             # Verwijder de geselecteerde labels uit de dictionary
+        if selected_label in labels:                                                    # Controleer of het geselecteerde label bestaat in de geladen labels
+            del labels[selected_label]                                                  # Verwijder het geselecteerde label uit de labels dictionary
+    
+    with open('labels.txt', 'w') as file:                                               # Schrijf de bijgewerkte labels terug naar het bestand 
+        for label, color in labels.items():                                             # Itereer door elk label en de bijbehorende kleur
+            file.write(f"{{'{label}': '{color}'}}\n")                                   # Schrijf het label en de kleur naar het bestand met een nieuwe regel aan het einde
+
+    load_labels_for_deletion()                                                          # Roep de functie aan om de checkboxen te vernieuwen
+    messagebox.showinfo("Success", f"Verwijderde labels: {', '.join(labels_to_delete)}.")   # Toon een succesbericht met de namen van de verwijderde labels
 
 #############################Set up the Tkinter window
 root = tk.Tk()              #Create the main window for the application
