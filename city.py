@@ -1,18 +1,7 @@
-import requests
 import tkinter as tk
 from tkinter import messagebox, ttk
 import ast  # To safely evaluate string representations of Python literals
-
-def get_lat_long_openweathermap(city_name, api_key):
-    url = f"http://api.openweathermap.org/geo/1.0/direct?q={city_name}&limit=1&appid={api_key}"
-    response = requests.get(url)
-    data = response.json()
-
-    if data:
-        location = data[0]
-        return location['lat'], location['lon']
-    else:
-        return None, None
+from my_functions import get_lat_long_openweathermap
 
 def fetch_location():
     city_name = city_entry.get()
