@@ -192,4 +192,4 @@ tk.Button(remove_frame, text="Back", command=load_main_screen).pack(pady=10)    
 footer_label=tk.Label(root, text="Made by Philippe-Arnaud Hiroux ©", font=("Arial", 10))    #Create a label for the footer with creator's name and copyright symbol, using specified font and size
 footer_label.pack(side=tk.BOTTOM, pady=10)                                                  #Pack the footer label at the bottom of the window with padding of 10 pixels
 
-root.mainloop() #Voer de Tkinter-evenloop uit
+root.mainloop() #Start the Tkinter event loop
