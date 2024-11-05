@@ -1,4 +1,6 @@
 import requests
+from tkinter import messagebox, ttk
+import ast  # To safely evaluate string representations of Python literals
 
 def import_data_from_file():                                                    #This function import the data from the location.txt file and put it in a list
     data_list = []                                                              #Create an empty list to store the data dictionaries
@@ -41,3 +43,19 @@ def get_lat_long_openweathermap(city_name, api_key):                            
         return location['lat'], location['lon']                                                 #Return the latitude and longitude of the location
     else:                                                                                       #If the response does not contains any data
         return None, None                                                                       #Return None if no data is found
+    
+def load_years_from_file(file_name):                                    #This function loads the years as a label from 'labels.txt'
+    years = []                                                          #Initialize an empty list to store the years
+    try:                                                                #Try this code
+        with open(file_name, 'r') as file:                              #Open the specified file in read mode
+            for line in file:                                           #Iterate through each line in the file
+                try:                                                    #Convert string representation of dictionary to a Python dictionary
+                    data_dict = ast.literal_eval(line.strip())          #Safely evaluate the line as a dictionary
+                    for year in data_dict.keys():                       #Iterate through keys (years) in the dictionary
+                        years.append(year)                              #Add only the year to the list
+                except (SyntaxError, ValueError):                       #Handle parsing errors
+                    continue                                            #Skip lines that cannot be parsed
+    except FileNotFoundError:                                           #Handle the case where the file does not exist
+        messagebox.showerror("Error", f"File {file_name} not found.")   #Display an error message if file is missing
+    years.sort()                                                        #Sort the list of years in ascending order
+    return years                                                        #Return the sorted list of years

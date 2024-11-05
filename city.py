@@ -1,51 +1,30 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 import ast  # To safely evaluate string representations of Python literals
-from my_functions import get_lat_long_openweathermap
+from my_functions import get_lat_long_openweathermap, load_years_from_file
 
-def fetch_location():
-    city_name = city_entry.get()
-    year = year_combobox.get()  # Get selected year from combobox
+def fetch_location(city_entry, year_combobox):
+    city_name = city_entry.get()                                                                                #Get the city name entered by the user
+    year = year_combobox.get()                                                                                  #Get selected year from the combobox
     
-    if not year:  # Check if a year is selected
-        messagebox.showerror("Error", "Select a year.")
+    if not year:                                                                                                #Check if a year is selected
+        messagebox.showerror("Error", "Select a year.")                                                         #Show an error if no year is selected
         return
     
-    api_key = '29c971711cb3db394b7fb7ad51ac44cb'  # Replace with your own API key
-    latitude, longitude = get_lat_long_openweathermap(city_name, api_key)
+    api_key = '29c971711cb3db394b7fb7ad51ac44cb'                                                                #Replace with your own API key for OpenWeatherMap
+    latitude, longitude = get_lat_long_openweathermap(city_name, api_key)                                       #Fetch latitude and longitude for the city
 
-    if latitude and longitude:
-        result_text = (f"The latitude of {city_name} is: {latitude}\n"
-                       f"The longitude of {city_name} is: {longitude}\n"
-                       f"Label: {year}")
-        messagebox.showinfo("Result", result_text)
-
-        # Prepare the text for saving
-        text_to_save = f"\n{{'name': '{city_name}', 'lon': {longitude}, 'lat': {latitude}, 'label': '{year}'}}"
+    if latitude and longitude:                                                                                  #If coordinates are found
+        result_text = (f"The latitude of {city_name} is: {latitude}\n"                                          #Prepare result message with latitude
+                       f"The longitude of {city_name} is: {longitude}\n"                                        #Add longitude to result message
+                       f"Label: {year}")                                                                        #Add selected year as label to result message
+        messagebox.showinfo("Result", result_text)                                                              #Show result in an info messagebox 
+        text_to_save = f"\n{{'name': '{city_name}', 'lon': {longitude}, 'lat': {latitude}, 'label': '{year}'}}" #Prepare the text for saving to file
         
-        # Open the file in append mode ('a')
-        with open('location.txt', 'a') as bestand:
-            # Write the text to the file followed by a newline character
-            bestand.write(text_to_save + '\n')
+        with open('location.txt', 'a') as bestand:                                                              #Open 'location.txt' for appending
+            bestand.write(text_to_save + '\n')                                                                  #Write the prepared text to the file, followed by a newline character
     else:
-        messagebox.showerror("Error", f"No data found for {city_name}.")
-
-def load_years_from_file(file_name):
-    years = []
-    try:
-        with open(file_name, 'r') as file:
-            for line in file:
-                # Convert string representation of dictionary to a Python dictionary
-                try:
-                    data_dict = ast.literal_eval(line.strip())
-                    for year in data_dict.keys():
-                        years.append(year)  # Add only the year to the list
-                except (SyntaxError, ValueError):
-                    continue  # Skip lines that cannot be parsed
-    except FileNotFoundError:
-        messagebox.showerror("Error", f"File {file_name} not found.")
-    years.sort()
-    return years
+        messagebox.showerror("Error", f"No data found for {city_name}.")                                        #Show an error if no location data is found
 
 # Set up the Tkinter window
 root = tk.Tk()

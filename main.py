@@ -3,21 +3,6 @@ from tkinter import messagebox
 import subprocess  # To invoke another Python script
 from PIL import Image, ImageTk  # For working with JPG images
 
-def read_and_sort_years():
-    years = {}
-    try:
-        with open('year.txt', 'r') as file:
-            for line in file:
-                # Assuming the format of each line is like {'year': color}
-                year_data = eval(line.strip())  # Evaluate string to dictionary
-                years.update(year_data)
-    except FileNotFoundError:
-        messagebox.showerror("Error", "year.txt file not found.")
-        return []
-    
-    sorted_years = sorted(years.keys(), key=int)  # Sort keys (years) numerically
-    return sorted_years
-
 def open_city_window():
     subprocess.Popen(['python', 'city.py'])
 

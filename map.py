@@ -29,16 +29,17 @@ df['color'] = df['year'].map(year_color_map)
 print("DataFrame with colors:", df)
 
 # Maak de interactieve kaart
-fig = px.scatter_geo(df,
-                     lon='lon',
-                     lat='lat',
-                     hover_name='name',  # De naam van de stad verschijnt bij hover
-                     title='My world map!',
-                     projection='natural earth',
-                     color='year',  # Gebruik het jaar voor kleuren
-                     color_discrete_map=year_color_map,  # Koppel kleuren aan jaren
-                     hover_data={'lon': False, 'lat': False, 'year': False}  # Verberg lon, lat en year bij hover
-                     )
+fig = px.scatter_geo(
+    df,
+    lon='lon',
+    lat='lat',
+    hover_name='name',  # De naam van de stad verschijnt bij hover
+    title='My world map!',
+    projection='natural earth',
+    color='year',  # Gebruik het jaar voor kleuren
+    color_discrete_map=year_color_map,  # Koppel kleuren aan jaren
+    hover_data={'lon': False, 'lat': False, 'year': False}  # Verberg lon, lat en year bij hover
+)
 
 # Pas de grootte van de stippen aan
 fig.update_traces(marker=dict(size=10))  # Pas de grootte naar wens aan
