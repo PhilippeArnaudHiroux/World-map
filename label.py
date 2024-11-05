@@ -161,7 +161,7 @@ choose_color_button = tk.Button(add_frame, text="Choose Color", command=choose_c
 choose_color_button.pack(pady=5)
 
 # Create a button to add the new label and color
-add_label_button = tk.Button(add_frame, text="Add Label", command=add_label)
+add_label_button = tk.Button(add_frame, text="+", command=add_label, fg="green", font=("Arial", 20))
 add_label_button.pack(pady=20)
 
 # Create a label for displaying the selected color
@@ -183,7 +183,7 @@ switch_frame_button = tk.Button(add_frame, text="Switch to Delete Labels", comma
 switch_frame_button.pack(pady=10)
 
 # Create a button to delete the selected labels
-delete_button = tk.Button(delete_frame, text="Delete Selected Labels", command=delete_labels)
+delete_button = tk.Button(delete_frame, text="X", command=delete_labels, fg="red", font=("Arial", 20))
 delete_button.pack(pady=20)
 
 # Create a button to go back to the add labels frame
