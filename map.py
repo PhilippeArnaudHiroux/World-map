@@ -1,6 +1,6 @@
 import plotly.express as px
 import pandas as pd
-from data import import_data_from_file, import_year_from_file
+from my_functions import import_data_from_file, import_year_from_file
 
 # Importeer de data
 cities = import_data_from_file()         # Informatie over de steden
