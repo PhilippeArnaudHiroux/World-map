@@ -20,6 +20,7 @@ When you start the code you will see the following screen. You will be given thr
 * Going to the city page
 * Going to the label page
 * Going to the world map
+
 ![main](image/readme/main.jpg)
 ### Add frame
 
