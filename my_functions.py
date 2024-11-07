@@ -2,7 +2,7 @@ import requests                 #Import the requests library to handle HTTP requ
 from tkinter import messagebox  #Import specific modules from tkinter for message boxes and themed widgets
 import ast                      #Import ast module to safely evaluate string representations of Python literals
 import pycountry                #Import pycountry to work with country information and codes
-from api_key import api_key
+from api_key import api_key     #Create this file and place your api key in it
 
 def import_data_from_file():#####################################################This function import the data from the location.txt file and put it in a list
     data_list = []                                                              #Create an empty list to store the data dictionaries
