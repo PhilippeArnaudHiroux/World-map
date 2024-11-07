@@ -28,16 +28,23 @@ When you start the code you will see the following screen. You will be given thr
 #### Add a location
 Here you can add a location by typing the name of the location. You also need to add a label to the location. When you press the green plus symbol the longitude, latitude and country are requested from the location.
 ![add location](image/readme/add_city.jpg)
+<details>
+  <summary>Show add image</summary>
+    <img src="image/readme/add_city.jpg" alt="Add image" />
+</details>
 
 #### Delete location
 On the **add location** page you have a button **Delete place**. Here you can delete a location. When you click open the page all locations from your list will appear. You can also filter by countries and by labels. When you select a location and then click on the red cross, this location will be removed from your list.
-![delete location](image/readme/del_city.jpg)
+<details>
+  <summary>Show delete image</summary>
+    <img src="image/readme/del_city.jpg.jpg" alt="Delete image" />
+</details>
 
 #### Add a location manually
 On the add location page there is also a button add place manually. If you click on this you can add a location manually by adding a name, longitude, latitude country code and label. When you press the green plus the location will be added to your list.
 <details>
-  <summary>Bekijk afbeelding</summary>
-<img src="image/readme/add_city_manual.jpg" alt="Afbeelding beschrijving" />
+  <summary>Show add manually image</summary>
+    <img src="image/readme/add_city_manual.jpg" alt="Add manually image" />
 </details>
 
 # Source
