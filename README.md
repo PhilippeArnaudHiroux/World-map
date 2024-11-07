@@ -17,13 +17,21 @@ pip install requests
 
 ## The code
 When you start the code you will see the following screen. You will be given three options:
-* Going to the city page
+* Going to the location page
 * Going to the label page
 * Going to the world map
 
 ![main](image/readme/main.jpg)
 ### Add frame
+![add city](image/City.jpg)
 
+#### Add a location
+Here you can add a location by typing the name of the location. You also need to add a label to the location. When you press the green plus symbol the longitude, latitude and country are requested from the location.
+![add location](image/readme/add_city.jpg)
+
+#### Delete location
+On the **add location** page you have a button **Delete place**. Here you can delete a location. When you click open the page all locations from your list will appear. You can also filter by countries and by labels. When you select a location and then click on the red cross, this location will be removed from your list.
+![delete location](image/readme/del_city.jpg)
 # Source
 ## Python
 * [plotly.express](https://plotly.com/python/plotly-express/)
