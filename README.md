@@ -32,6 +32,14 @@ Here you can add a location by typing the name of the location. You also need to
 #### Delete location
 On the **add location** page you have a button **Delete place**. Here you can delete a location. When you click open the page all locations from your list will appear. You can also filter by countries and by labels. When you select a location and then click on the red cross, this location will be removed from your list.
 ![delete location](image/readme/del_city.jpg)
+
+#### Add a location manually
+On the add location page there is also a button add place manually. If you click on this you can add a location manually by adding a name, longitude, latitude country code and label. When you press the green plus the location will be added to your list.
+<details>
+  <summary>Bekijk afbeelding</summary>
+<img src="image/readme/add_city_manual.jpg" alt="Afbeelding beschrijving" />
+</details>
+
 # Source
 ## Python
 * [plotly.express](https://plotly.com/python/plotly-express/)
