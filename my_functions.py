@@ -2,6 +2,7 @@ import requests                 #Import the requests library to handle HTTP requ
 from tkinter import messagebox  #Import specific modules from tkinter for message boxes and themed widgets
 import ast                      #Import ast module to safely evaluate string representations of Python literals
 import pycountry                #Import pycountry to work with country information and codes
+from api_key import api_key
 
 def import_data_from_file():#####################################################This function import the data from the location.txt file and put it in a list
     data_list = []                                                              #Create an empty list to store the data dictionaries
@@ -36,7 +37,6 @@ def import_labels_from_file():##################################################
     return data_list                                                            #Return the list of dictionaries after reading all lines
 
 def get_lat_long_openweathermap(city_name):#############################################################################################################This function asks for the longitude and latitude of a city from OpenWeather
-    api_key='29c971711cb3db394b7fb7ad51ac44cb'                                                                                                          #API key for accessing location data
     url=f"http://api.openweathermap.org/geo/1.0/direct?q={city_name}&limit=1&appid={api_key}"                                                           #Construct the API request URL for OpenWeatherMap's geocoding service
     response=requests.get(url)                                                                                                                          #Send a GET request to the constructed URL
     data=response.json()                                                                                                                                #Parse the JSON response from the API
