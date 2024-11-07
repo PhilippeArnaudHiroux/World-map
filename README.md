@@ -22,12 +22,11 @@ When you start the code you will see the following screen. You will be given thr
 * Going to the world map
 
 ![main](image/readme/main.jpg)
-### Add frame
-![add city](image/City.jpg)
+### Location frame
+![Location frame](image/City.jpg)
 
 #### Add a location
 Here you can add a location by typing the name of the location. You also need to add a label to the location. When you press the green plus symbol the longitude, latitude and country are requested from the location.
-![add location](image/readme/add_city.jpg)
 <details>
   <summary>Show add image</summary>
     <img src="image/readme/add_city.jpg" alt="Add image" />
@@ -37,7 +36,7 @@ Here you can add a location by typing the name of the location. You also need to
 On the **add location** page you have a button **Delete place**. Here you can delete a location. When you click open the page all locations from your list will appear. You can also filter by countries and by labels. When you select a location and then click on the red cross, this location will be removed from your list.
 <details>
   <summary>Show delete image</summary>
-    <img src="image/readme/del_city.jpg.jpg" alt="Delete image" />
+    <img src="image/readme/del_city.jpg" alt="Delete image" />
 </details>
 
 #### Add a location manually
@@ -46,6 +45,29 @@ On the add location page there is also a button add place manually. If you click
   <summary>Show add manually image</summary>
     <img src="image/readme/add_city_manual.jpg" alt="Add manually image" />
 </details>
+
+### Label frame
+![Label frame](image/Label.jpg)
+
+#### Add label
+Here you can create a new label. First you have to give the label a name and then choose a color for your label. When you press the green plus here the label will be added to the list.
+<details>
+  <summary>Show add label image</summary>
+    <img src="image/readme/add_label.jpg" alt="Add label image" />
+</details>
+
+#### Delete label
+In this frame you can remove a label. You can select the box for the label, and when you press the red cross this label will be removed from the list.
+<details>
+  <summary>Show delete label image</summary>
+    <img src="image/readme/del_label.jpg" alt="Delete label image" />
+</details>
+
+### World map
+![World map label](image/Map.jpg)
+When you press the icon above you will see a map in your browser that is run locally. On this map you will see the locations in the colors that you have assigned to them with the labels.
+![World map](image/readme/world_map.jpg)
+![world map 2](image/readme/world_map_2.jpg)
 
 # Source
 ## Python
