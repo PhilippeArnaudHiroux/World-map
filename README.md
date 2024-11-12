@@ -64,7 +64,7 @@ In this frame you can remove a label. You can select the box for the label, and 
 </details>
 
 ### World map
-![World map label](image/Map.jpg)
+![World map label](image/Map.jpg)</br>
 When you press the icon above you will see a map in your browser that is run locally. On this map you will see the locations in the colors that you have assigned to them with the labels.
 ![World map](image/readme/world_map.jpg)
 ![world map 2](image/readme/world_map_2.jpg)
