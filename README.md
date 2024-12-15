@@ -1,5 +1,6 @@
 # World-map
-This python project is a project where you can indicate on a world map where you have been before. You can also give each location a label.
+This python project is a project where you can indicate on a world map where you have been before. You can also give each location a label.</br>
+[Video](https://youtu.be/D6IZ3pmXIZM)
 
 ## Libraries
 ```
